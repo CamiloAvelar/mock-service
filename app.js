@@ -34,7 +34,8 @@ mockTopic.on('messageReceived', (received) => {
       console.log(received.message);
       break;
     case 'user':
-      console.log(`USUARIO ${received.message}`);
+      const message = JSON.parse(received.message);
+      console.log(`USUARIO ${message.user.name}`);
       break;
   }
 });
@@ -73,7 +74,7 @@ process.stdin.on('keypress', (str, key) => {
     }
 
     if(str == 'u') {
-      mockTopic.sendMessage('Karranca', 'user');
+      mockTopic.sendMessage(JSON.stringify({user: {name:'Karranca'}}), 'user');
     }
   }
 });
