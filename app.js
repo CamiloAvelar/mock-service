@@ -31,11 +31,11 @@ mockTopic.on('messageReceived', (received) => {
       }
       break;
     case 'sensor':
-      console.log(received.message);
+      // console.log(received.message);
       break;
     case 'user':
-      const message = JSON.parse(received.message);
-      console.log(`USUARIO ${message.user.name}`);
+      const message = received.message;
+      console.log(`USUARIO ${message}`);
       break;
   }
 });
