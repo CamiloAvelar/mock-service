@@ -22,7 +22,7 @@ mockTopic.on('messageReceived', (received) => {
     case 'actuator':
       if(received.message === 'start') {
         console.log('STARTING ACTUATOR, OPENING VALVULE');
-        startSensorMessages();
+        startSensorMessages('123');
       }
 
       if(received.message === 'stop') {
@@ -41,15 +41,17 @@ mockTopic.on('messageReceived', (received) => {
 });
 
 let interval;
+let sendMsg;
 
-const startSensorMessages = () => {
+const startSensorMessages = (msg) => {
+  sendMsg = msg;
   interval = setInterval(() => {
-    sendSensorMessage()
+    sendSensorMessage(sendMsg)
   }, 50)
 }
 
-const sendSensorMessage = () => {
-  mockTopic.sendMessage('123', 'sensor');
+const sendSensorMessage = (msg) => {
+  mockTopic.sendMessage(msg, 'sensor');
 }
 
 const stopSensorMessage = () => {
@@ -75,6 +77,10 @@ process.stdin.on('keypress', (str, key) => {
 
     if(str == 'u') {
       mockTopic.sendMessage(JSON.stringify({user: {name:'Karranca'}}), 'user');
+    }
+
+    if(str == '-') {
+      sendMsg = '5';
     }
   }
 });
