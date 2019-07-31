@@ -22,7 +22,7 @@ mockTopic.on('messageReceived', (received) => {
     case 'actuator':
       if(received.message === 'start') {
         console.log('STARTING ACTUATOR, OPENING VALVULE');
-        startSensorMessages('123');
+        startSensorMessages(20);
       }
 
       if(received.message === 'stop') {
@@ -46,8 +46,19 @@ let sendMsg;
 const startSensorMessages = (msg) => {
   sendMsg = msg;
   interval = setInterval(() => {
-    sendSensorMessage(sendMsg)
+    sendSensorMessage(sendMsg.toString())
+    if(sendMsg < 150) {
+      sendMsg += 1;
+    }
+    if(sendMsg >= 150) {
+      sendMsg = randomIntFromInterval(161,164);
+    }
+    console.log(sendMsg)
   }, 50)
+}
+
+function randomIntFromInterval(min, max) { // min and max included 
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 const sendSensorMessage = (msg) => {
@@ -80,7 +91,9 @@ process.stdin.on('keypress', (str, key) => {
     }
 
     if(str == '-') {
-      sendMsg = '5';
+      for(let i = 0 ; i < 15 ; i++) {
+        sendSensorMessage('5')
+      }
     }
   }
 });
